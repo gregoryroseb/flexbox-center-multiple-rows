@@ -215,4 +215,53 @@
       </header>
     </div>
   </body>
+  <style>
+    /****** Custom Style ********/
+    .list-menu--inline {
+      justify-content: center;
+    }
+    .list-menu {
+      /* width: 300px; */
+    }
+    @media screen and (min-width: 990px) {
+      .list-menu--inline {
+        visibility: hidden;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('content loaded')
+      var header_elem = document.getElementsByClassName('header-wrapper');
+      var header_width = header_elem[0].offsetWidth;
+      if(header_width < 990 ) {//mobile view
+        return;
+      }
+      var header_menu_elem = header_elem[0].getElementsByClassName('header__inline-menu');
+  
+      var list_menu_elem = header_menu_elem[0].getElementsByClassName('list-menu');
+      var list_menu_width = list_menu_elem[0].offsetWidth;
+  
+      //get the width of menu item
+      var menu_item_elem = list_menu_elem[0].children;
+      var menu_item_width = 0;
+      var menu_all_width = 0;
+      for (var i = 0; i < menu_item_elem.length; i++) {
+        menu_item_width = menu_item_elem[i].offsetWidth;
+        menu_all_width += menu_item_width;
+      }
+      var menu_scale = menu_all_width / list_menu_width;
+      if(menu_scale < 1) {//the menu fits properly.
+        list_menu_elem[0].style.visibility = "visible";
+        return;
+      }
+      menu_scale = Math.ceil(menu_scale);//rounds up to the nearest integer
+      var spare_spacing = 120; //120px for line break
+      var total_length = menu_all_width + spare_spacing * 1;
+      var row_width = Math.ceil(total_length / menu_scale);
+      console.log("total_length:" + total_length + ", set list menu width:" + row_width);
+      list_menu_elem[0].style.width = row_width + "px";
+      list_menu_elem[0].style.visibility = "visible";
+    });
+   </script>
 </html>
